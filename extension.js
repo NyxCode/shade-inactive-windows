@@ -11,6 +11,17 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const SHADE_BRIGHTNESS = -0.2;
 const SHADE_DESATURATION = 0.2;
 
+const SHADE_IN = {
+                    shadeLevel: 1.0,
+                    time: shade_time,
+                    transition: 'linear'
+                  }
+const SHADE_OUT = {
+                    shadeLevel: 0.0,
+                    time: shade_time,
+                    transition: 'linear'
+                  }
+
 let on_window_created;
 
 const WindowShader = new Lang.Class({
@@ -74,11 +85,7 @@ function enable() {
         if(!wa._inactive_shader) return;
         if (!meta_win.has_focus()) {
             var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
-            Tweener.addTween(wa._inactive_shader,
-                             { shadeLevel: 1.0,
-                               time: shade_time,
-                               transition: 'linear'
-                             });
+            Tweener.addTween(wa._inactive_shader, SHADE_IN);
         }
     }
 
@@ -89,17 +96,9 @@ function enable() {
                 return;
             var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
             if (the_window == wa.get_meta_window()) {
-                Tweener.addTween(wa._inactive_shader,
-                                 { shadeLevel: 0.0,
-                                   time: shade_time,
-                                   transition: 'linear'
-                 });
+                Tweener.addTween(wa._inactive_shader, SHADE_OUT);
             } else if(wa._inactive_shader.shadeLevel == 0.0) {
-                Tweener.addTween(wa._inactive_shader,
-                                 { shadeLevel: 1.0,
-                                   time: shade_time,
-                                   transition: 'linear'
-                                 });
+                Tweener.addTween(wa._inactive_shader, SHADE_IN);
             }
         });
     }
