@@ -8,6 +8,7 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 
+const SHADE_TIME = 0.5;
 const SHADE_BRIGHTNESS = -0.2;
 const SHADE_DESATURATION = 0.2;
 
@@ -44,31 +45,9 @@ const WindowShader = new Lang.Class({
     }
 });
 
-var ShadeInactiveWindowsSettings = {};
 function init() {
-    var schemaDir = ExtensionUtils.getCurrentExtension().dir.get_child('data').get_child('glib-2.0').get_child('schemas');
-    var schemaSource = Gio.SettingsSchemaSource.get_default();
-
-    if(schemaDir.query_exists(null)) {
-        schemaSource = Gio.SettingsSchemaSource.new_from_directory(schemaDir.get_path(), schemaSource, false);
-    }
-
-    var schemaObj = schemaSource.lookup('fi.iki.hepaajan.shade-inactive-windows.preferences', true);
-    if(!schemaObj) {
-        throw new Error('failure to look up schema');
-    }
-    ShadeInactiveWindowsSettings = new Gio.Settings({ settings_schema: schemaObj });
-    var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
-    SHADE_OUT = {
-                  shadeLevel: 0.0,
-                  time: shade_time,
-                  transition: 'linear'
-                }
-    SHADE_IN = {
-                  shadeLevel: 1.0,
-                  time: shade_time,
-                  transition: 'linear'
-                }
+    SHADE_OUT = { shadeLevel: 0.0, time: SHADE_TIME, transition: 'linear' }
+    SHADE_IN = { shadeLevel: 1.0, time: SHADE_TIME, transition: 'linear' }
 }
 
 function enable() {
