@@ -87,7 +87,6 @@ function enable() {
         wa._inactive_shader = new WindowShader(wa);
         if(!wa._inactive_shader) return;
         if (!meta_win.has_focus()) {
-
             Tweener.addTween(wa._inactive_shader, SHADE_IN);
         }
     }
@@ -97,7 +96,6 @@ function enable() {
             verifyShader(wa);
             if (!wa._inactive_shader)
                 return;
-            var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
             if (the_window == wa.get_meta_window()) {
                 Tweener.addTween(wa._inactive_shader, SHADE_OUT);
             } else if(wa._inactive_shader.shadeLevel == 0.0) {
