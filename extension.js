@@ -11,16 +11,8 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const SHADE_BRIGHTNESS = -0.2;
 const SHADE_DESATURATION = 0.2;
 
-const SHADE_IN = {
-                    shadeLevel: 1.0,
-                    time: shade_time,
-                    transition: 'linear'
-                  }
-const SHADE_OUT = {
-                    shadeLevel: 0.0,
-                    time: shade_time,
-                    transition: 'linear'
-                  }
+var SHADE_IN
+var SHADE_OUT
 
 let on_window_created;
 
@@ -66,6 +58,17 @@ function init() {
         throw new Error('failure to look up schema');
     }
     ShadeInactiveWindowsSettings = new Gio.Settings({ settings_schema: schemaObj });
+    var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
+    SHADE_OUT = {
+                  shadeLevel: 0.0,
+                  time: shade_time,
+                  transition: 'linear'
+                }
+    SHADE_IN = {
+                  shadeLevel: 1.0,
+                  time: shade_time,
+                  transition: 'linear'
+                }
 }
 
 function enable() {
@@ -84,7 +87,7 @@ function enable() {
         wa._inactive_shader = new WindowShader(wa);
         if(!wa._inactive_shader) return;
         if (!meta_win.has_focus()) {
-            var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
+
             Tweener.addTween(wa._inactive_shader, SHADE_IN);
         }
     }
