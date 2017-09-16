@@ -58,27 +58,20 @@ function init() {
 }
 
 function enable() {
-
     function use_shader(meta_win) {
-	if (!meta_win) {
-	    return false;
-	}
-	var type = meta_win.get_window_type()
-	return (type == Meta.WindowType.NORMAL ||
-		type == Meta.WindowType.DIALOG ||
-		type == Meta.WindowType.MODAL_DIALOG);
+    	if (!meta_win) return false;
+    	var type = meta_win.get_window_type()
+    	return (type == Meta.WindowType.NORMAL ||
+    		type == Meta.WindowType.DIALOG ||
+    		type == Meta.WindowType.MODAL_DIALOG);
     }
 
     function verifyShader(wa) {
-        if (wa._inactive_shader)
-            return;
+        if (wa._inactive_shader) return;
         var meta_win = wa.get_meta_window();
-        if (!use_shader(meta_win)) {
-            return;
-        }
+        if (!use_shader(meta_win)) return;
         wa._inactive_shader = new WindowShader(wa);
-        if(!wa._inactive_shader)
-            return;
+        if(!wa._inactive_shader) return;
         if (!meta_win.has_focus()) {
             var shade_time = ShadeInactiveWindowsSettings.get_int('shade-time') / 1000;
             Tweener.addTween(wa._inactive_shader,
@@ -116,6 +109,7 @@ function enable() {
             the_window._shade_on_focus = the_window.connect('focus', focus);
         }
     }
+
     on_window_created = global.display.connect('window-created', window_created);
 
     global.get_window_actors().forEach(function(wa) {
@@ -132,6 +126,7 @@ function disable() {
     if (on_window_created) {
         global.display.disconnect(on_window_created);
     }
+
     global.get_window_actors().forEach(function(wa) {
         var win = wa.get_meta_window();
         if (win && win._shade_on_focus) {
