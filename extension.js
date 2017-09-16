@@ -96,6 +96,8 @@ function enable() {
             verifyShader(wa);
             if (!wa._inactive_shader)
                 return;
+            let isFullscreen = wa.meta_window.is_fullscreen();
+            if(isFullscreen) return;
             if (the_window == wa.get_meta_window()) {
                 Tweener.addTween(wa._inactive_shader, SHADE_OUT);
             } else if(wa._inactive_shader.shadeLevel == 0.0) {
