@@ -1,8 +1,8 @@
 {
     "shell-version": ["3.4", "3.6", "3.8", "3.10", "3.12", "3.14", "3.16",
                       "3.18", "3.20"],
-    "uuid": "shade-inactive-windows@hepaajan.iki.fi",
+    "uuid": "shade-inactive-windows@nyxcode.de",
     "name": "Shade Inactive Windows",
     "description": "Make inactive windows darker",
-    "url": "https://github.com/hepaajan/shade-inactive-windows"
+    "url": "https://github.com/NyxCode/shade-inactive-windows"
 }

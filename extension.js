@@ -8,8 +8,8 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 
-const SHADE_BRIGHTNESS = -0.9;
-const SHADE_DESATURATION = 0.9;
+const SHADE_BRIGHTNESS = -0.2;
+const SHADE_DESATURATION = 0.2;
 
 let on_window_created;
 
