@@ -1,19 +1,14 @@
-/* -*- mode: js2 - indent-tabs-mode: nil - js2-basic-offset: 4 -*- */
-const St = imports.gi.St;
-const Meta = imports.gi.Meta;
-const Lang = imports.lang;
-const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
-const ExtensionUtils = imports.misc.extensionUtils;
-
 const SHADE_TIME = 0.5;
 const SHADE_BRIGHTNESS = -0.2;
 const SHADE_DESATURATION = 0.2;
 
-var SHADE_IN
-var SHADE_OUT
+const SHADE_IN = { shadeLevel: 1.0, time: SHADE_TIME, transition: 'linear' }
+const SHADE_OUT = { shadeLevel: 0.0, time: SHADE_TIME, transition: 'linear' }
+
+const Meta = imports.gi.Meta;
+const Lang = imports.lang;
+const Tweener = imports.ui.tweener;
+const Clutter = imports.gi.Clutter;
 
 let on_window_created;
 
@@ -45,29 +40,27 @@ const WindowShader = new Lang.Class({
     }
 });
 
-function init() {
-    SHADE_OUT = { shadeLevel: 0.0, time: SHADE_TIME, transition: 'linear' }
-    SHADE_IN = { shadeLevel: 1.0, time: SHADE_TIME, transition: 'linear' }
-}
-
 function enable() {
     function use_shader(meta_win) {
-    	if (!meta_win) return false;
+    	if (!meta_win)
+          return false;
     	var type = meta_win.get_window_type()
     	return (type == Meta.WindowType.NORMAL ||
-    		type == Meta.WindowType.DIALOG ||
-    		type == Meta.WindowType.MODAL_DIALOG);
+          		type == Meta.WindowType.DIALOG ||
+          		type == Meta.WindowType.MODAL_DIALOG);
     }
 
     function verifyShader(wa) {
-        if (wa._inactive_shader) return;
+        if (wa._inactive_shader)
+            return;
         var meta_win = wa.get_meta_window();
-        if (!use_shader(meta_win)) return;
+        if (!use_shader(meta_win))
+            return;
         wa._inactive_shader = new WindowShader(wa);
-        if(!wa._inactive_shader) return;
-        if (!meta_win.has_focus()) {
+        if(!wa._inactive_shader)
+            return;
+        if (!meta_win.has_focus())
             Tweener.addTween(wa._inactive_shader, SHADE_IN);
-        }
     }
 
     function ignoreShader(window) {
@@ -97,27 +90,24 @@ function enable() {
     }
 
     function window_created(__unused_display, the_window) {
-        if (use_shader(the_window)) {
+        if (use_shader(the_window))
             the_window._shade_on_focus = the_window.connect('focus', focus);
-        }
     }
 
     on_window_created = global.display.connect('window-created', window_created);
 
     global.get_window_actors().forEach(function(wa) {
         var meta_win = wa.get_meta_window();
-        if (!meta_win) {
+        if (!meta_win)
             return;
-        }
         verifyShader(wa);
         window_created(null, wa.get_meta_window());
     });
 }
 
 function disable() {
-    if (on_window_created) {
+    if (on_window_created)
         global.display.disconnect(on_window_created);
-    }
 
     global.get_window_actors().forEach(function(wa) {
         var win = wa.get_meta_window();
