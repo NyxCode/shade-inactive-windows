@@ -1,5 +1,5 @@
 const SHADE_TIME = 0.5;
-const SHADE_BRIGHTNESS = -0.2;
+const SHADE_BRIGHTNESS = -0.15;
 const SHADE_DESATURATION = 0.2;
 
 const SHADE_IN = { shadeLevel: 1.0, time: SHADE_TIME, transition: 'linear' }
